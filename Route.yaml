@@ -1,0 +1,25 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: "true"
+  labels:
+    app: django
+    app.kubernetes.io/component: django
+    app.kubernetes.io/instance: django
+    app.kubernetes.io/name: django
+    app.kubernetes.io/part-of: python
+    app.openshift.io/runtime: python
+    app.openshift.io/runtime-version: 3.9-ubi8
+  name: django
+spec:
+  port:
+    targetPort: 8080-tcp
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: django
+    weight: 100
+  wildcardPolicy: None

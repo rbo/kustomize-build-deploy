@@ -1,0 +1,46 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    app.openshift.io/vcs-ref: ""
+    app.openshift.io/vcs-uri: https://github.com/sclorg/django-ex.git
+    openshift.io/generated-by: OpenShiftWebConsole
+  labels:
+    app: django
+    app.kubernetes.io/component: django
+    app.kubernetes.io/instance: django
+    app.kubernetes.io/name: django
+    app.kubernetes.io/part-of: python
+    app.openshift.io/runtime: python
+    app.openshift.io/runtime-version: 3.9-ubi8
+  name: django
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: django:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      uri: https://github.com/sclorg/django-ex.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: python:3.9-ubi8
+        namespace: openshift
+    type: Source
+  successfulBuildsHistoryLimit: 5
+  triggers:
+    - generic:
+        secretReference:
+          name: django-generic-webhook-secret
+      type: Generic
+    - imageChange: {}
+      type: ImageChange
+    - type: ConfigChange
